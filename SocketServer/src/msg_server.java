@@ -73,12 +73,27 @@ public class msg_server extends Thread {
 						this.nick=(String)Data.get("name");
 						broadCast("Welcome. "+this.nick);
 						
-						ArrayList<String> names =new ArrayList<String>(); 
+						ArrayList<String> names1 =new ArrayList<String>(); 
 
 						for(msg_server user : users) {
-							names.add(user.nick);
+							names1.add(user.nick);
 						}
-						broadCast(names.toArray(new String[names.size()]));
+						broadCast(names1.toArray(new String[names1.size()]));
+						break;
+					case "changeName":
+						this.nick=(String)Data.get("name");
+						ArrayList<String> names2 =new ArrayList<String>(); 
+
+						for(msg_server user : users) {
+							names2.add(user.nick);
+						}
+						broadCast(names2.toArray(new String[names2.size()]));
+						break;
+					case "whisper":
+						for(msg_server user : users) {
+							if(user.nick.equals((String)Data.get("name"))) 
+								user.send(">>"+this.nick+": "+(String) Data.get("message"));
+						}
 						break;
 					case "quit":
 						send("quit");

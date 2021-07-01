@@ -397,8 +397,19 @@ class Sender extends Thread {
 	
 	void send(String msg) throws Exception {
 		HashMap<String,Object> map = new HashMap<String,Object>();
-		map.put("protocol", "msg");
-		map.put("message", msg);
+		if (msg.split(" ")[0].equals("/change")) {
+			map.put("protocol", "changeName");
+			map.put("name", msg.split(" ")[1]);
+		}
+		else if (msg.split(" ")[0].equals("/w")) {
+			map.put("protocol", "whisper");
+			map.put("name", msg.split(" ")[1]);
+			map.put("message", msg.split(" ")[2]);
+		}
+		else {
+			map.put("protocol", "msg");
+			map.put("message", msg);
+		}
 		oos.writeObject(map);
 	}
 	void setNick(String n) throws Exception {
